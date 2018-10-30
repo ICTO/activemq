@@ -8,11 +8,11 @@ spec:
     type: "Git"
     git:
       uri: "https://github.com/ICTO/activemq"
-      ref: "5.15.7"
+      ref: "master"
   strategy:
     type: "Docker"
     dockerStrategy:
   output:
     to:
       kind: "ImageStreamTag"
-      name: "activemq:5.15.7"
+      name: "activemq:latest"

@@ -42,9 +42,10 @@ ADD files/root /
 ADD files/docker-entrypoint.sh /docker-entrypoint.sh
 
 RUN \
-    chown -R ${USER}:${GROUP} ${APP_HOME} &&\
-    chown -R ${USER}:${GROUP} /data &&\
-    chown -R ${USER}:${GROUP} /var/log/activemq
+    chown -R ${UID}:${GID} ${APP_HOME} &&\
+    chown -R ${UID}:${GID} /data &&\
+    chown -R ${UID}:${GID} /var/log/activemq && \
+    chown -R ${UID}:${GID} /docker-entrypoint.sh
 
 # Expose all port
 EXPOSE 8161
