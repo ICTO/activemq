@@ -32,8 +32,8 @@ RUN mkdir -p "${CONFD_HOME}/etc/conf.d" "${CONFD_HOME}/etc/templates" "${CONFD_H
     chmod +x "${CONFD_HOME}/bin/confd"
 
 # Install s6-overlay
-RUN curl -sL https://github.com/just-containers/s6-overlay/releases/download/v1.21.7.0/s6-overlay-amd64.tar.gz \
-    | tar -zx -C /
+ADD https://github.com/just-containers/s6-overlay/releases/download/v1.21.7.0/s6-overlay-amd64.tar.gz /tmp/
+RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C /
 
 
 # Install ActiveMQ software
@@ -60,6 +60,7 @@ EXPOSE 61613
 EXPOSE 1883
 EXPOSE 61614
 
+USER 10003
 VOLUME ["/data", "/var/log/activemq"]
 WORKDIR ${APP_HOME}
 CMD ["/init"]
