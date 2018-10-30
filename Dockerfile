@@ -45,7 +45,8 @@ RUN \
     chown -R ${UID}:${GID} ${APP_HOME} &&\
     chown -R ${UID}:${GID} /data &&\
     chown -R ${UID}:${GID} /var/log/activemq && \
-    chown -R ${UID}:${GID} /docker-entrypoint.sh
+    chmod 775 /docker-entrypoint.sh && \ 
+    chown ${UID}:${GID} /docker-entrypoint.sh
 
 # Expose all port
 EXPOSE 8161
