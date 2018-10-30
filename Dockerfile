@@ -57,8 +57,5 @@ EXPOSE 61614
 VOLUME ["/data", "/var/log/activemq"]
 WORKDIR ${APP_HOME}
 
-RUN chmod g=u -R $(ls -d /* | grep -Ev "dev|proc|sys") && \
-    chmod g=u /dev /proc &>/dev/null
-
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["/bin/sh", "-c", "bin/activemq console"]
