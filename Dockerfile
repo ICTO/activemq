@@ -33,8 +33,10 @@ RUN mkdir -p "${CONFD_HOME}/etc/conf.d" "${CONFD_HOME}/etc/templates" "${CONFD_H
 
 # Install s6-overlay
 ADD https://github.com/just-containers/s6-overlay/releases/download/v1.21.7.0/s6-overlay-amd64.tar.gz /tmp/
-RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C /
-
+RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C / && \
+    echo '' > /etc/s6/init/init-stage2-fixattrs.txt && \
+    rm -rf /tmp/* && \
+    mkdir -p /sys /proc /dev
 
 # Install ActiveMQ software
 RUN \
@@ -60,7 +62,13 @@ EXPOSE 61613
 EXPOSE 1883
 EXPOSE 61614
 
-USER 10003
 VOLUME ["/data", "/var/log/activemq"]
 WORKDIR ${APP_HOME}
-CMD ["/init"]
+
+COPY s6-hiercopy /bin/s6-hiercopy
+COPY pre-init.sh /pre-init.sh
+
+RUN chmod g=u -R $(ls -d /* | grep -Ev "dev|proc|sys") && \
+  chmod g=u /dev /proc &>/dev/null
+
+CMD ["/pre-init.sh"]
