@@ -1,0 +1,11 @@
+[template]
+prefix = "${CONFD_PREFIX_KEY}"
+src = "jmx.access.tmpl"
+dest = "${APP_HOME}/conf/jmx.access"
+mode = "0600"
+gid = $GID
+uid = $UID
+keys = [
+  "/config",
+  "/jmx"
+]

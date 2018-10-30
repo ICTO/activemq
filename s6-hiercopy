@@ -1,4 +1,0 @@
-#!/bin/execlineb -p
-
-elgetpositionals
-cp -aT $@

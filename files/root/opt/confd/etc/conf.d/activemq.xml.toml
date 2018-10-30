@@ -1,0 +1,10 @@
+[template]
+prefix = "${CONFD_PREFIX_KEY}"
+src = "activemq.xml.tmpl"
+dest = "${APP_HOME}/conf/activemq.xml"
+mode = "0744"
+gid = $GID
+uid = $UID
+keys = [
+  "/config"
+]

@@ -1,0 +1,10 @@
+[template]
+prefix = "${CONFD_PREFIX_KEY}"
+src = "log4j.properties.tmpl"
+dest = "${APP_HOME}/conf/log4j.properties"
+mode = "0744"
+gid = $GID
+uid = $UID
+keys = [
+  "/logger"
+]

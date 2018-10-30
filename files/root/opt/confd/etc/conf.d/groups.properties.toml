@@ -1,0 +1,12 @@
+[template]
+prefix = "${CONFD_PREFIX_KEY}"
+src = "groups.properties.tmpl"
+dest = "${APP_HOME}/conf/groups.properties"
+mode = "0744"
+gid = $GID
+uid = $UID
+keys = [
+  "/config",
+  "/groups",
+  "/admin"
+]

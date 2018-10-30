@@ -5,12 +5,9 @@ MAINTAINER Kristof Keppens (kristof.keppens@ugent.be)
 ENV CONFD_PREFIX_KEY="/activemq" \
     CONFD_BACKEND="env" \
     CONFD_INTERVAL="60" \
-    CONFD_NODES="" \
-    S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
     LANG="en_US.utf8" \
     APP_HOME="/opt/activemq" \
     APP_VERSION="5.15.7" \
-    SCHEDULER_VOLUME="/opt/scheduler" \
     USER=activemq \
     GROUP=root \
     UID=10003 \
@@ -31,13 +28,6 @@ RUN mkdir -p "${CONFD_HOME}/etc/conf.d" "${CONFD_HOME}/etc/templates" "${CONFD_H
     curl -Lo "${CONFD_HOME}/bin/confd" "https://github.com/kelseyhightower/confd/releases/download/v${CONFD_VERSION}/confd-${CONFD_VERSION}-linux-amd64" &&\
     chmod +x "${CONFD_HOME}/bin/confd"
 
-# Install s6-overlay
-ADD https://github.com/just-containers/s6-overlay/releases/download/v1.21.7.0/s6-overlay-amd64.tar.gz /tmp/
-RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C / && \
-    echo '' > /etc/s6/init/init-stage2-fixattrs.txt && \
-    rm -rf /tmp/* && \
-    mkdir -p /sys /proc /dev /var/run/s6
-
 # Install ActiveMQ software
 RUN \
     mkdir -p ${APP_HOME} /data /var/log/activemq  && \
@@ -48,12 +38,13 @@ RUN \
     adduser -g "${USER} user" -D -h ${APP_HOME} -G ${GROUP} -s /bin/sh -u ${UID} ${USER}
 
 
-ADD root /
+ADD files/root /
+ADD files/docker-entrypoint.sh /docker-entrypoint.sh
+
 RUN \
     chown -R ${USER}:${GROUP} ${APP_HOME} &&\
     chown -R ${USER}:${GROUP} /data &&\
-    chown -R ${USER}:${GROUP} /var/log/activemq && \
-    chown -R ${USER}:${GROUP} /var/run/s6
+    chown -R ${USER}:${GROUP} /var/log/activemq
 
 # Expose all port
 EXPOSE 8161
@@ -66,10 +57,8 @@ EXPOSE 61614
 VOLUME ["/data", "/var/log/activemq"]
 WORKDIR ${APP_HOME}
 
-COPY s6-hiercopy /bin/s6-hiercopy
-COPY pre-init.sh /pre-init.sh
-
 RUN chmod g=u -R $(ls -d /* | grep -Ev "dev|proc|sys") && \
-  chmod g=u /dev /proc &>/dev/null
+    chmod g=u /dev /proc &>/dev/null
 
-CMD ["/pre-init.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["/bin/sh", "-c", "bin/activemq console"]
