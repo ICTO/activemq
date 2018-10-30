@@ -36,7 +36,7 @@ ADD https://github.com/just-containers/s6-overlay/releases/download/v1.21.7.0/s6
 RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C / && \
     echo '' > /etc/s6/init/init-stage2-fixattrs.txt && \
     rm -rf /tmp/* && \
-    mkdir -p /sys /proc /dev
+    mkdir -p /sys /proc /dev /var/run/s6
 
 # Install ActiveMQ software
 RUN \
@@ -52,7 +52,8 @@ ADD root /
 RUN \
     chown -R ${USER}:${GROUP} ${APP_HOME} &&\
     chown -R ${USER}:${GROUP} /data &&\
-    chown -R ${USER}:${GROUP} /var/log/activemq
+    chown -R ${USER}:${GROUP} /var/log/activemq && \
+    chown -R ${USER}:${GROUP} /var/run/s6
 
 # Expose all port
 EXPOSE 8161
