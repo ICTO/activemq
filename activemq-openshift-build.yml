@@ -7,7 +7,7 @@ spec:
   source:
     type: "Git"
     git:
-      uri: "https://github.com/ICTO/activemq"
+      uri: "https://github.com/mm-dict/activemq"
       ref: "master"
   strategy:
     type: "Docker"
