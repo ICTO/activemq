@@ -7,7 +7,7 @@ ENV CONFD_PREFIX_KEY="/activemq" \
     CONFD_INTERVAL="60" \
     LANG="en_US.utf8" \
     APP_HOME="/opt/activemq" \
-    APP_VERSION="5.15.9" \
+    APP_VERSION="5.15.12" \
     USER=activemq \
     GROUP=root \
     UID=10003 \
@@ -45,7 +45,7 @@ RUN \
     chown -R ${UID}:${GID} ${APP_HOME} &&\
     chown -R ${UID}:${GID} /data &&\
     chown -R ${UID}:${GID} /var/log/activemq && \
-    chmod 775 /docker-entrypoint.sh && \ 
+    chmod 775 /docker-entrypoint.sh && \
     chown ${UID}:${GID} /docker-entrypoint.sh
 
 # Expose all port
